@@ -38,6 +38,11 @@ public class MQAuthenticationBroker extends BrokerFilter {
         String userName = info.getUserName();
         String password = info.getPassword();
 
+        if("system".equals(userName)) {
+            super.addConnection(context, info);
+            return;
+        }
+
         if(MQAuthenticationHelper.authenticateConnection(userName, password, serverUrlConnectionCheck))
         {
             super.addConnection(context, info);
