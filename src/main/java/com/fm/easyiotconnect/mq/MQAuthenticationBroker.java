@@ -38,6 +38,8 @@ public class MQAuthenticationBroker extends BrokerFilter {
         String userName = info.getUserName();
         String password = info.getPassword();
 
+        logger.error("Connection request from " + userName);
+
         if("system".equals(userName)) {
             super.addConnection(context, info);
             return;
@@ -64,6 +66,8 @@ public class MQAuthenticationBroker extends BrokerFilter {
         String username = context.getUserName();
         String destination = info.getDestination().getQualifiedName();
 
+        logger.error("Consumer request from " + username + " on " + destination);
+
         logger.info("Consumer request from User : " + username + " to destination : " + destination);
 
         if("ActiveMQ.Advisory.TempQueue,ActiveMQ.Advisory.TempTopic".equals(destination))
@@ -87,7 +91,7 @@ public class MQAuthenticationBroker extends BrokerFilter {
         String username = context.getUserName();
         String destination = info.getDestination().getPhysicalName();
 
-        logger.info("Producer request from User : " + username + " to destination : " + destination);
+        logger.error("Producer request from " + username + " on " + destination);
 
         if (MQAuthenticationHelper.authenticateSession(username, destination, serverUrlSessionCheck))
         {
