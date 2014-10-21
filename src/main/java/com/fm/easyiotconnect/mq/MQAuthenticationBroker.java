@@ -30,6 +30,9 @@ public class MQAuthenticationBroker extends BrokerFilter {
 
         this.serverUrlConnectionCheck = serverUrlConnectionCheck;
         this.serverUrlSessionCheck = serverUrlSessionCheck;
+
+        logger.error("Created MQAuthenticationBroker, serverUrlConnectionCheck:" + serverUrlConnectionCheck +
+                " - serverUrlSessionCheck: " + serverUrlSessionCheck);
     }
 
     @Override
@@ -67,8 +70,6 @@ public class MQAuthenticationBroker extends BrokerFilter {
         String destination = info.getDestination().getQualifiedName();
 
         logger.error("Consumer request from " + username + " on " + destination);
-
-        logger.info("Consumer request from User : " + username + " to destination : " + destination);
 
         if("ActiveMQ.Advisory.TempQueue,ActiveMQ.Advisory.TempTopic".equals(destination))
         {
