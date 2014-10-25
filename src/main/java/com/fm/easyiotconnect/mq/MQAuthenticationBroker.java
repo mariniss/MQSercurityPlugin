@@ -31,8 +31,8 @@ public class MQAuthenticationBroker extends BrokerFilter {
         this.serverUrlConnectionCheck = serverUrlConnectionCheck;
         this.serverUrlSessionCheck = serverUrlSessionCheck;
 
-        logger.error("Created MQAuthenticationBroker, serverUrlConnectionCheck:" + serverUrlConnectionCheck +
-                " - serverUrlSessionCheck: " + serverUrlSessionCheck);
+        logger.info("Created MQAuthenticationBroker, serverUrlConnectionCheck: " + serverUrlConnectionCheck +
+                                                 " - serverUrlSessionCheck: " + serverUrlSessionCheck);
     }
 
     @Override
@@ -41,11 +41,8 @@ public class MQAuthenticationBroker extends BrokerFilter {
         String userName = info.getUserName();
         String password = info.getPassword();
 
-        logger.error("Connection request from " + userName);
-
-        if("system".equals(userName)) {
-            super.addConnection(context, info);
-            return;
+        if(logger.isDebugEnabled()) {
+            logger.debug("Connection request from " + userName);
         }
 
         if(MQAuthenticationHelper.authenticateConnection(userName, password, serverUrlConnectionCheck))
@@ -69,17 +66,14 @@ public class MQAuthenticationBroker extends BrokerFilter {
         String username = context.getUserName();
         String destination = info.getDestination().getQualifiedName();
 
-        logger.error("Consumer request from " + username + " on " + destination);
+        if(logger.isDebugEnabled()) {
+            logger.debug("Consumer request from " + username + " on " + destination);
+        }
 
-        if("ActiveMQ.Advisory.TempQueue,ActiveMQ.Advisory.TempTopic".equals(destination))
+        if (MQAuthenticationHelper.authenticateSession(username, destination, serverUrlSessionCheck))
         {
             return super.addConsumer(context, info);
         }
-        else if (MQAuthenticationHelper.authenticateSession(username, destination, serverUrlSessionCheck))
-        {
-            return super.addConsumer(context, info);
-        }
-
         else
         {
             throw new SecurityException("User " + context.getUserName() + " is not authorized to write ");
@@ -92,7 +86,9 @@ public class MQAuthenticationBroker extends BrokerFilter {
         String username = context.getUserName();
         String destination = info.getDestination().getPhysicalName();
 
-        logger.error("Producer request from " + username + " on " + destination);
+        if(logger.isDebugEnabled()) {
+            logger.debug("Producer request from " + username + " on " + destination);
+        }
 
         if (MQAuthenticationHelper.authenticateSession(username, destination, serverUrlSessionCheck))
         {
