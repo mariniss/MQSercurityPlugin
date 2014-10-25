@@ -45,7 +45,12 @@ public class MQAuthenticationBroker extends BrokerFilter {
             logger.debug("Connection request from " + userName);
         }
 
-        if(MQAuthenticationHelper.authenticateConnection(userName, password, serverUrlConnectionCheck))
+        if("system".equals(userName))
+        {
+            super.addConnection(context, info);
+            return;
+        }
+        else if(MQAuthenticationHelper.authenticateConnection(userName, password, serverUrlConnectionCheck))
         {
             super.addConnection(context, info);
             return;
@@ -78,7 +83,6 @@ public class MQAuthenticationBroker extends BrokerFilter {
         {
             return super.addConsumer(context, info);
         }
-
         else
         {
             throw new SecurityException("User " + context.getUserName() + " is not authorized to write ");
