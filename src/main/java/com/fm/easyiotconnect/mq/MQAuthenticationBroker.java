@@ -70,10 +70,15 @@ public class MQAuthenticationBroker extends BrokerFilter {
             logger.debug("Consumer request from " + username + " on " + destination);
         }
 
-        if (MQAuthenticationHelper.authenticateSession(username, destination, serverUrlSessionCheck))
+        if("ActiveMQ.Advisory.TempQueue,ActiveMQ.Advisory.TempTopic".equals(destination))
         {
             return super.addConsumer(context, info);
         }
+        else if (MQAuthenticationHelper.authenticateSession(username, destination, serverUrlSessionCheck))
+        {
+            return super.addConsumer(context, info);
+        }
+
         else
         {
             throw new SecurityException("User " + context.getUserName() + " is not authorized to write ");
