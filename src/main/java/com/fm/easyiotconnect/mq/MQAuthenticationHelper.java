@@ -1,5 +1,7 @@
 package com.fm.easyiotconnect.mq;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -16,6 +18,8 @@ import java.util.List;
  * Created by fabiomarini on 18/09/14.
  */
 public class MQAuthenticationHelper {
+
+   private static final Log logger = LogFactory.getLog(MQAuthenticationHelper.class);
 
     /**
      *
@@ -34,12 +38,12 @@ public class MQAuthenticationHelper {
         post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
         HttpResponse response = client.execute(post);
-        String json_string = EntityUtils.toString(response.getEntity());
+        String json_string = EntityUtils.toString(response.getEntity()).trim();
 
         CharSequence json_content = json_string.subSequence(json_string.indexOf('{') + 1, json_string.indexOf('}'));
         String[] response_value = json_content.toString().split(":");
 
-        if("\"OK\"".equals(response_value[1]))
+        if("\"OK\"".equals(response_value[1].trim()))
         {
             return true;
         }
@@ -66,12 +70,12 @@ public class MQAuthenticationHelper {
         post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
         HttpResponse response = client.execute(post);
-        String json_string = EntityUtils.toString(response.getEntity());
+        String json_string = EntityUtils.toString(response.getEntity()).trim();
 
         CharSequence json_content = json_string.subSequence(json_string.indexOf('{') + 1, json_string.indexOf('}'));
         String[] response_value = json_content.toString().split(":");
 
-        if("\"OK\"".equals(response_value[1]))
+        if("\"OK\"".equals(response_value[1].trim()))
         {
             return true;
         }

@@ -1,6 +1,11 @@
-out/artifacts/MQSercurityPlugin/MQSercurityPlugin.jar
-src/main/java/com/fm/easyiotconnect/mq/MQAuthenticationBroker.java
+out/*
+targert/*
 target/classes/com/fm/easyiotconnect/mq/MQAuthenticationBroker.class
 target/classes/com/fm/easyiotconnect/mq/MQAuthenticationHelper.class
 target/classes/com/fm/easyiotconnect/mq/MQAuthenticationPlugin.class
 target/test-classes/com/fm/easyiotconnect/mq/MQAuthenticationHelperTest.class
+target/MQSercurityPlugin-1.0-SNAPSHOT.jar
+target/maven-archiver/pom.properties
+MQSercurityPlugin.iml
+.idea/misc.xml
+.idea/vcs.xml
